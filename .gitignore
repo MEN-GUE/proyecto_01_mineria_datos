@@ -1,0 +1,42 @@
+# Entornos virtuales de Python
+venv/
+env/
+.env
+
+# Archivos compilados y caché de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter Notebooks (por si deciden hacer pruebas)
+.ipynb_checkpoints/
+
+# Directorios de Datos (¡Muy importante!)
+# Ignoramos la data cruda por peso y seguridad, pero dejamos la estructura
+data/raw/*
+!data/raw/.gitkeep
+# Ignoramos la data procesada si es muy pesada (opcional, pero recomendado)
+data/processed/*
+!data/processed/.gitkeep
+
+# Resultados y gráficas generadas localmente
+output/graphs/*
+!output/graphs/.gitkeep
+output/results/*
+!output/results/.gitkeep
+
+# Archivos de sistemas operativos (Linux/macOS/Windows)
+.DS_Store
+Thumbs.db
+*~
+*.swp
+
+# IDEs y Editores (VS Code, PyCharm, etc.)
+.vscode/
+.idea/
+
+# Historial de R (como migramos de R, por si quedó algún archivo residual)
+.Rhistory
+.RData
+.Ruserdata
