@@ -39,6 +39,36 @@ def generar_exploracion(df):
     plt.savefig('../output/graphs/histogramas_numericas.png', bbox_inches='tight')
     plt.close()
 
+
+def resumir_variable_respuesta(df):
+    if 'hec_tipagre' not in df.columns:
+        return
+
+    os.makedirs('../output/graphs', exist_ok=True)
+    os.makedirs('../output/results', exist_ok=True)
+
+    print("Resumiendo variable respuesta...")
+    frecuencias = (
+        df['hec_tipagre']
+        .fillna('MISSING')
+        .astype(str)
+        .value_counts(dropna=False)
+        .rename_axis('hec_tipagre')
+        .reset_index(name='frecuencia')
+    )
+    frecuencias['proporcion'] = frecuencias['frecuencia'] / len(df)
+    frecuencias.to_csv('../output/results/frecuencias_hec_tipagre.csv', index=False)
+
+    top = frecuencias.head(10).copy()
+    plt.figure(figsize=(12, 6))
+    sns.barplot(data=top, x='frecuencia', y='hec_tipagre', color='#264653')
+    plt.title('Distribución de la variable respuesta hec_tipagre')
+    plt.xlabel('Frecuencia')
+    plt.ylabel('Categoría')
+    plt.tight_layout()
+    plt.savefig('../output/graphs/hec_tipagre_top10.png', bbox_inches='tight')
+    plt.close()
+
 def prueba_normalidad(df):
     print("Generando Q-Q Plots...")
     df_muestra = df.sample(n=min(5000, len(df)), random_state=123)
@@ -62,5 +92,6 @@ def prueba_normalidad(df):
 if __name__ == "__main__":
     df = pd.read_parquet('../data/processed/datos_limpios.parquet')
     generar_exploracion(df)
+    resumir_variable_respuesta(df)
     prueba_normalidad(df)
     print("Exploración finalizada. Gráficas guardadas en output/graphs/")
